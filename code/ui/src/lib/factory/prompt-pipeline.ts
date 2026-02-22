@@ -1,7 +1,11 @@
+import fs from "node:fs/promises";
+import path from "node:path";
+
 import { buildBlueprint } from "@/lib/factory/blueprint";
 import { crawlWebsite } from "@/lib/factory/crawl";
 import { inferIntent } from "@/lib/factory/intent";
 import { scaffoldProject } from "@/lib/factory/scaffold";
+import { captureWebsiteScreenshots } from "@/lib/factory/screenshots";
 import { resolveTarget } from "@/lib/factory/target-selection";
 import type { FactoryRun, PipelineStep } from "@/lib/factory/types";
 
@@ -26,6 +30,12 @@ export async function runPromptToProduction(prompt: string, options: RunOptions)
   };
 
   const scaffold = await scaffoldProject({ ...runWithoutScaffold, pipeline: [] }, options);
+  const screenshots = await captureWebsiteScreenshots({
+    projectPath: scaffold.projectPath,
+    screenshotPlan: crawl.screenshotPlan,
+  });
+
+  scaffold.createdFiles.push(...screenshots.capturedFiles);
 
   const pipeline: PipelineStep[] = [
     {
@@ -54,6 +64,14 @@ export async function runPromptToProduction(prompt: string, options: RunOptions)
       detail: `Prepared ${blueprint.modules.length} implementation module(s).`,
     },
     {
+      id: "screenshots",
+      label: "Website Screenshots",
+      status: screenshots.failures.length > 0 ? "degraded" : "completed",
+      detail:
+        screenshots.failures[0] ??
+        `Captured ${screenshots.capturedFiles.length} screenshot(s) into '${screenshots.screenshotDirectory}'.`,
+    },
+    {
       id: "scaffold",
       label: "Local Scaffold",
       status: "completed",
@@ -61,9 +79,18 @@ export async function runPromptToProduction(prompt: string, options: RunOptions)
     },
   ];
 
-  return {
+  const run: FactoryRun = {
     ...runWithoutScaffold,
     pipeline,
+    screenshots,
     scaffold,
   };
+
+  await fs.writeFile(
+    path.join(scaffold.projectPath, "factory/run.json"),
+    JSON.stringify(run, null, 2),
+    "utf8"
+  );
+
+  return run;
 }

@@ -4,7 +4,7 @@ import path from "node:path";
 
 import type { FactoryRun, PathValidationResult, ProjectScaffoldResult } from "@/lib/factory/types";
 
-type RunForScaffold = Omit<FactoryRun, "scaffold">;
+type RunForScaffold = Omit<FactoryRun, "scaffold" | "screenshots">;
 
 function slugify(value: string): string {
   return value
@@ -145,7 +145,7 @@ function buildGitignore(): string {
     ".env",
     ".env.local",
     "coverage/",
-    "artifacts/screenshots/*.png",
+    "artifacts/screenshots/",
     "*.log",
     "",
   ].join("\n");
@@ -302,8 +302,6 @@ export async function scaffoldProject(
   }
 
   await fs.mkdir(path.join(projectPath, "artifacts/screenshots"), { recursive: true });
-  await fs.writeFile(path.join(projectPath, "artifacts/screenshots/.gitkeep"), "", "utf8");
-  createdFiles.push("artifacts/screenshots/.gitkeep");
 
   return {
     outputRootPath: options.outputRootPath,

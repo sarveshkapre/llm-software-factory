@@ -62,6 +62,12 @@ export interface ProjectScaffoldResult {
   createdFiles: string[];
 }
 
+export interface ScreenshotCaptureResult {
+  screenshotDirectory: string;
+  capturedFiles: string[];
+  failures: string[];
+}
+
 export interface FactoryRun {
   prompt: string;
   createdAt: string;
@@ -70,6 +76,7 @@ export interface FactoryRun {
   pipeline: PipelineStep[];
   crawl: CrawlSnapshot;
   blueprint: BuildBlueprint;
+  screenshots: ScreenshotCaptureResult;
   scaffold: ProjectScaffoldResult;
 }
 

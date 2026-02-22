@@ -11,7 +11,7 @@ This workspace implements a single-product surface: one prompt in, local project
 - System performs:
   - target resolution (direct URL or competitor fallback)
   - website crawl and endpoint discovery
-  - screenshot capture planning
+  - screenshot capture planning + Playwright screenshot capture
   - feature map extraction
   - modular build blueprint generation
   - local project folder scaffolding under selected root path
@@ -21,7 +21,9 @@ This workspace implements a single-product surface: one prompt in, local project
 - Default output path is the current runtime directory.
 - Path must be an absolute, existing, writable local directory.
 - A new project folder is always created under the selected root.
+- Captured screenshots are written into `artifacts/screenshots/`.
 - Generated README files must include: `Built by Codex, LLM AI Software Factory.`
+- Screenshot folders must stay out of git (`artifacts/screenshots/` in `.gitignore`).
 
 ## Stack
 

@@ -54,6 +54,37 @@ export function RunReport({ run }: RunReportProps) {
         </CardContent>
       </Card>
 
+      <Card className="border-black/10 bg-card/70">
+        <CardHeader>
+          <CardTitle className="text-base">Captured Screenshots</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          <p className="text-xs text-muted-foreground">{run.screenshots.screenshotDirectory}</p>
+          <p className="text-xs text-foreground/85">
+            {run.screenshots.capturedFiles.length} captured, {run.screenshots.failures.length} failed.
+          </p>
+          <div className="max-h-36 space-y-1 overflow-auto rounded-lg border border-black/10 bg-background/60 p-3">
+            {run.screenshots.capturedFiles.map((file) => (
+              <p key={file} className="font-mono text-[11px] text-foreground/80">
+                {file}
+              </p>
+            ))}
+            {run.screenshots.capturedFiles.length === 0 ? (
+              <p className="text-xs text-muted-foreground">No screenshots captured yet.</p>
+            ) : null}
+          </div>
+          {run.screenshots.failures.length > 0 ? (
+            <div className="space-y-1">
+              {run.screenshots.failures.slice(0, 3).map((failure) => (
+                <p key={failure} className="text-xs text-red-600">
+                  {failure}
+                </p>
+              ))}
+            </div>
+          ) : null}
+        </CardContent>
+      </Card>
+
       <div className="grid gap-4 lg:grid-cols-2">
         <Card className="border-black/10 bg-card/70">
           <CardHeader>

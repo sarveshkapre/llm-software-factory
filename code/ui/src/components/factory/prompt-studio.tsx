@@ -152,7 +152,7 @@ export function PromptStudio() {
           </CardTitle>
           <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
             One prompt to local execution. The system resolves a target, crawls pages, maps endpoints,
-            prepares screenshots, and scaffolds a complete project under your selected local root path.
+            captures screenshots, and scaffolds a complete project under your selected local root path.
           </p>
         </CardHeader>
         <CardContent className="space-y-5">
