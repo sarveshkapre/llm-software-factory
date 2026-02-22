@@ -1,8 +1,8 @@
 # llm-software-factory
 
-A starter project scaffold for building LLM-powered software workflows.
+Starter project for building LLM-powered software workflows.
 
-## Quickstart
+## Backend Quickstart
 
 ```bash
 python3 -m venv .venv
@@ -12,8 +12,17 @@ pytest
 python -m llm_software_factory
 ```
 
+## UI Quickstart
+
+```bash
+cd code/ui
+npm install
+npm run dev
+```
+
 ## Project Layout
 
-- `src/llm_software_factory/` - application package
-- `tests/` - test suite
-- `pyproject.toml` - project and tooling configuration
+- `src/llm_software_factory/` - Python application package
+- `tests/` - Python test suite
+- `code/ui/` - Next.js + Tailwind + shadcn frontend
+- `pyproject.toml` - Python project configuration
