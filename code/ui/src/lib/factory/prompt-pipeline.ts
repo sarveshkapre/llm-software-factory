@@ -1,14 +1,31 @@
 import { buildBlueprint } from "@/lib/factory/blueprint";
 import { crawlWebsite } from "@/lib/factory/crawl";
 import { inferIntent } from "@/lib/factory/intent";
+import { scaffoldProject } from "@/lib/factory/scaffold";
 import { resolveTarget } from "@/lib/factory/target-selection";
 import type { FactoryRun, PipelineStep } from "@/lib/factory/types";
 
-export async function runPromptToProduction(prompt: string): Promise<FactoryRun> {
+interface RunOptions {
+  outputRootPath: string;
+  fullOwnership: boolean;
+}
+
+export async function runPromptToProduction(prompt: string, options: RunOptions): Promise<FactoryRun> {
   const intent = inferIntent(prompt);
   const target = await resolveTarget(intent);
   const crawl = await crawlWebsite(target.url);
   const blueprint = buildBlueprint(intent, target, crawl);
+
+  const runWithoutScaffold = {
+    prompt,
+    createdAt: new Date().toISOString(),
+    intent,
+    target,
+    crawl,
+    blueprint,
+  };
+
+  const scaffold = await scaffoldProject({ ...runWithoutScaffold, pipeline: [] }, options);
 
   const pipeline: PipelineStep[] = [
     {
@@ -36,15 +53,17 @@ export async function runPromptToProduction(prompt: string): Promise<FactoryRun>
       status: "completed",
       detail: `Prepared ${blueprint.modules.length} implementation module(s).`,
     },
+    {
+      id: "scaffold",
+      label: "Local Scaffold",
+      status: "completed",
+      detail: `Created '${scaffold.projectPath}' with ${scaffold.createdFiles.length} file(s).`,
+    },
   ];
 
   return {
-    prompt,
-    createdAt: new Date().toISOString(),
-    intent,
-    target,
+    ...runWithoutScaffold,
     pipeline,
-    crawl,
-    blueprint,
+    scaffold,
   };
 }

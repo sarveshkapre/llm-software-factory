@@ -33,6 +33,27 @@ export function RunReport({ run }: RunReportProps) {
         </CardHeader>
       </Card>
 
+      <Card className="border-black/10 bg-card/70">
+        <CardHeader>
+          <CardTitle className="text-base">Local Scaffold Output</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          <p className="text-sm text-foreground/90">{run.scaffold.projectPath}</p>
+          <p className="text-xs text-muted-foreground">
+            {run.scaffold.fullOwnership ? "Full ownership" : "Minimal"} scaffold, {run.scaffold.createdFiles.length}
+            {" "}
+            files created.
+          </p>
+          <div className="max-h-40 space-y-1 overflow-auto rounded-lg border border-black/10 bg-background/60 p-3">
+            {run.scaffold.createdFiles.map((file) => (
+              <p key={file} className="font-mono text-[11px] text-foreground/80">
+                {file}
+              </p>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
       <div className="grid gap-4 lg:grid-cols-2">
         <Card className="border-black/10 bg-card/70">
           <CardHeader>

@@ -48,6 +48,20 @@ export interface BuildBlueprint {
   phases: string[];
 }
 
+export interface PathValidationResult {
+  valid: boolean;
+  resolvedPath: string;
+  message: string;
+}
+
+export interface ProjectScaffoldResult {
+  outputRootPath: string;
+  projectName: string;
+  projectPath: string;
+  fullOwnership: boolean;
+  createdFiles: string[];
+}
+
 export interface FactoryRun {
   prompt: string;
   createdAt: string;
@@ -56,4 +70,11 @@ export interface FactoryRun {
   pipeline: PipelineStep[];
   crawl: CrawlSnapshot;
   blueprint: BuildBlueprint;
+  scaffold: ProjectScaffoldResult;
+}
+
+export interface RunPromptRequest {
+  prompt: string;
+  outputRootPath: string;
+  fullOwnership: boolean;
 }
