@@ -1,6 +1,12 @@
 # llm-software-factory
 
-Starter project for building LLM-powered software workflows.
+Prompt-to-production software factory.
+
+## Product Goal
+
+One prompt: `What do you want to build?`
+
+The system resolves a target website (or best competitor fallback), crawls pages, maps endpoints, plans screenshot coverage, and generates a modular implementation blueprint.
 
 ## Backend Quickstart
 
@@ -22,7 +28,6 @@ npm run dev
 
 ## Project Layout
 
-- `src/llm_software_factory/` - Python application package
-- `tests/` - Python test suite
+- `src/llm_software_factory/` - Python package
+- `tests/` - Python tests
 - `code/ui/` - Next.js + Tailwind + shadcn frontend
-- `pyproject.toml` - Python project configuration
